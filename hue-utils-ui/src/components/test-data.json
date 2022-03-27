@@ -1,0 +1,29 @@
+{
+  "rooms": [
+    {
+      "Dining Room": {
+        "devices": ["Dining Room Light"]
+      }
+    },
+    {
+      "Living Room": {
+        "devices": ["Living Room Lamp", "Living Room Light"]
+      }
+    },
+    {
+      "Downstairs Guest Room": {
+        "devices": ["Guest Room Lamp"]
+      }
+    },
+    {
+      "Summer Room": {
+        "devices": ["Summer Room Lamp"]
+      }
+    },
+    {
+      "Green Bedroom": {
+        "devices": ["Green Room Lamp"]
+      }
+    }
+  ]
+}

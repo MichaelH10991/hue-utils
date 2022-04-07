@@ -1,0 +1,55 @@
+# Note: may need to remove mongo volume to reset auth settings.
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MONGO_INITDB_DATABASE=${MONGODB_INITDB}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+    volumes:
+      - mongodata:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    ports:
+      - 27017:27017
+    networks:
+      - mongodb_network
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      # controls whether we can see auth dbs
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGODB_ROOT_USERNAME}
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      # Web interface username and password
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_PASSWORD}
+    volumes:
+      - mongodata:/data/db
+    depends_on:
+      - mongo
+    networks:
+      - mongodb_network
+    ports:
+      - 8081:8081
+    healthcheck:
+      test: wget --quiet --tries=3 --spider http://admin:admin123@10.10.10.60:8081 || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+networks:
+  mongodb_network:
+    driver: bridge
+
+volumes: { "mongodata" }

@@ -13,9 +13,7 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
 import Dialog from "./dialog";
 
-import data from "./test-data.json";
-
-export default function NestedList() {
+export default function NestedList({ data, title }) {
   const [open, setOpen] = React.useState([]);
 
   const handleClick = (value) => () => {
@@ -71,7 +69,7 @@ export default function NestedList() {
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader component="div" id="nested-list-subheader">
-          Rooms with smart devices.
+          {title}
         </ListSubheader>
       }
     >

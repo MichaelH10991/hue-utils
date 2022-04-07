@@ -2,27 +2,30 @@ import logo from "./logo.svg";
 import "./App.css";
 import ListView from "./components/list-view";
 import MenuBar from "./components/menu-bar";
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import ShoppingList from "./components/shopping-list";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import data from "./test-data.json";
 
 function App() {
   return (
-      <Router>
-        <div className="App">
-          <header className="App-header"></header>
+    <Router>
+      <div className="App">
+        <header className="App-header">
           <MenuBar />
-        </div>
+        </header>
+        <body className="App-body">
           <Routes>
-            <Route path="/about">
-              {"foo"}
-            </Route>
-            <Route path="/users">
-              {"foo"}
-            </Route>
-            <Route path="/">
-              {"foo"}
-            </Route>
+            <Route
+              path="/alexa"
+              element={
+                <ListView data={data} title={"Rooms with smart devices."} />
+              }
+            />
+            <Route path="/shopping" element={<ShoppingList />} />
           </Routes>
-      </Router>
+        </body>
+      </div>
+    </Router>
   );
 }
 

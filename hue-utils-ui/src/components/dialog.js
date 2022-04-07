@@ -49,7 +49,6 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export default function CustomizedDialogs({ device }) {
-  console.log(device);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -67,12 +66,12 @@ export default function CustomizedDialogs({ device }) {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <BootstrapDialogTitle
+        {/* <BootstrapDialogTitle
           id="customized-dialog-title"
           onClose={handleClose}
         >
           {device}
-        </BootstrapDialogTitle>
+        </BootstrapDialogTitle> */}
         <DialogContent dividers>
           <Typography gutterBottom>
             {`Try saying \"Alexa turn on ${device}\"`}

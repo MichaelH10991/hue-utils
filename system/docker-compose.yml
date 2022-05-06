@@ -48,6 +48,31 @@ services:
       retries: 3
     restart: unless-stopped
 
+  automation-service:
+    image: automation-service:1.0.0
+    container_name: automation-service
+    environment:
+      - DATABASE_NAME=${DATABASE_NAME}
+      - COLLECTION_NAME=${COLLECTION_NAME}
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+      - MONGODB_URL=${MONGODB_URL}
+      - APP_PORT=${APP_PORT}
+    networks:
+      - mongodb_network
+    depends_on:
+      - mongo
+    ports:
+      - ${APP_PORT}:${APP_PORT}
+
+  automation-ui:
+    image: hue-utils-ui:0.1.0
+    container_name: automation-ui
+    networks:
+      - mongodb_network
+    ports:
+      - 3000:3000
+
 networks:
   mongodb_network:
     driver: bridge

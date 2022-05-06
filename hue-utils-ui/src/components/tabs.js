@@ -43,7 +43,6 @@ function a11yProps(index) {
 
 export default function BasicTabs({ children, tabs, value, setValue }) {
   const handleChange = (event, newValue) => {
-    console.log(event, newValue);
     setValue(newValue);
   };
 

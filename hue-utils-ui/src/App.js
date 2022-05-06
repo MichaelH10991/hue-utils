@@ -1,4 +1,5 @@
 import logo from "./logo.svg";
+import me from "./me.jpg";
 import "./App.css";
 import ListView from "./components/list-view";
 import MenuBar from "./components/menu-bar";
@@ -11,7 +12,7 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <MenuBar />
+          <MenuBar logo={logo} me={me} />
         </header>
         <body className="App-body">
           <Routes>

@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const AUTOMATION_API = "http://localhost:8080/shopping/";
+const SHOPPING_API = "http://localhost:8082/shopping";
+const MEALS_API = "http://localhost:8082/meals";
 
 const handle_axios = async (callback) => {
   try {
@@ -19,15 +20,47 @@ const handle_axios = async (callback) => {
   }
 };
 
-const get_list_for_week = async (weekday) => {
-  const url = `${AUTOMATION_API}/list?weekday=${weekday}`;
-  handle_axios(async () => await axios.get(url));
+const get_shopping_list_for_weekday = async (weekday) => {
+  return handle_axios(
+    async () => await axios.get(`${SHOPPING_API}/list?weekday=${weekday}`)
+  );
 };
 
-const post_single_item = async (item) => {
-  console.log(item);
-  const url = `${AUTOMATION_API}/update`;
-  handle_axios(async () => await axios.post(url, item));
+const post_single_shopping_item = async (item) => {
+  return handle_axios(
+    async () => await axios.post(`${SHOPPING_API}/update`, item)
+  );
 };
 
-export { get_list_for_week, post_single_item };
+const get_meal_list_for_weekday = async (weekday) => {
+  return handle_axios(
+    async () => await axios.get(`${MEALS_API}/list?weekday=${weekday}`)
+  );
+};
+
+const post_single_meal_item = async (item) => {
+  return handle_axios(
+    async () => await axios.post(`${MEALS_API}/update`, item)
+  );
+};
+
+const delete_single_meal_item = async (id) => {
+  return handle_axios(
+    async () => await axios.delete(`${MEALS_API}/delete?id=${id}`)
+  );
+};
+
+const delete_single_shopping_item = async (id) => {
+  return handle_axios(
+    async () => await axios.delete(`${SHOPPING_API}/delete?id=${id}`)
+  );
+};
+
+export {
+  get_shopping_list_for_weekday,
+  post_single_shopping_item,
+  get_meal_list_for_weekday,
+  post_single_meal_item,
+  delete_single_meal_item,
+  delete_single_shopping_item,
+};

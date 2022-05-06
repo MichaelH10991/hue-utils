@@ -1,8 +1,9 @@
 import * as React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import { GridToolbarContainer, useGridApiRef } from "@mui/x-data-grid-pro";
-import { DataGrid } from "@mui/x-data-grid";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
@@ -45,17 +46,38 @@ function EditToolbar(props) {
  * @param {*} param0
  * @returns
  */
-export default function BasicEditingGrid({ columns, update, weekday }) {
+export default function BasicEditingGrid({ columns, update, weekday, api }) {
   const apiRef = useGridApiRef();
   const [rows, setRows] = React.useState([]);
 
+  const deleteRow = React.useCallback(
+    (id) => () => {
+      setTimeout(() => {
+        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+        api.delete_single_shopping_item(id);
+      });
+    },
+    []
+  );
+
+  columns.push({
+    field: "actions",
+    type: "actions",
+    width: 80,
+    getActions: (params) => [
+      <GridActionsCellItem
+        icon={<DeleteIcon />}
+        label="Delete"
+        onClick={deleteRow(params.id)}
+      />,
+    ],
+  });
+
   React.useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(
-        `http://localhost:8080/shopping/list?weekday=${weekday}`
-      );
-      if (result.data) {
-        setRows(result.data[weekday]);
+      const result = await api.get_shopping_list_for_weekday(weekday);
+      if (result) {
+        setRows(result[weekday]);
       } else {
         setRows([]);
       }
@@ -90,7 +112,7 @@ export default function BasicEditingGrid({ columns, update, weekday }) {
   };
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <div style={{ height: 400, width: "100%", marginTop: "10px" }}>
       <DataGrid
         rows={rows}
         processRowUpdate={processRowUpdate}

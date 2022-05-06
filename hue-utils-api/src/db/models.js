@@ -1,5 +1,4 @@
-const NO_SCHEMA = "Must provide schema configuration";
-const NO_CONNECTION = "Connection object not in expected format";
+const { NO_SCHEMA, NO_CONNECTION } = require("./constants");
 
 const toJSON = () => {
   const { __v, _id, ...object } = this.toObject();

@@ -5,8 +5,7 @@ const init = (router, config, models) => {
     const { shopping_lists } = models;
     try {
       if (!req.body) {
-        send_response(res, { message: "no data received" });
-        throw new Error("no data");
+        return send_response(res, { message: "no data received" });
       }
       const weekday = Object.keys(req.body)[0];
       const weekday_items = req.body[weekday];
@@ -36,11 +35,11 @@ const init = (router, config, models) => {
       // const response = await shopping.save(shopping);
       if (saved_items.length) {
         console.log("saved:", saved_items);
-        send_response(res, { message: saved_items });
+        return send_response(res, { message: saved_items });
       }
     } catch (e) {
       console.log(e.message);
-      send_error(res, { message: e.message });
+      return send_error(res, { message: e.message });
     }
   });
 };

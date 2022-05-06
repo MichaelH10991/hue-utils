@@ -8,4 +8,13 @@ module.exports = {
       ammount: String,
     },
   ],
+  meals: [
+    {
+      weekday: String,
+      id: String,
+      name: String,
+      person: [{ name: String }],
+      meal: String,
+    },
+  ],
 };

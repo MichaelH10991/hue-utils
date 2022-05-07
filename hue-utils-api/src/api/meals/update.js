@@ -2,9 +2,9 @@ const { updates } = require("../../controllers");
 
 const init = (router, config, models) => {
   const { meals } = models;
-  const { upsertOne } = updates.init(meals);
+  const { upsert_one } = updates.init(meals);
   router.post("/update", async (req, res) => {
-    return upsertOne(req, res, "meals");
+    return upsert_one(req, res, "meals");
   });
 };
 

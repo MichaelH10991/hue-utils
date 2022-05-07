@@ -2,7 +2,7 @@ const { uuid } = require("uuidv4");
 const { send_response, send_error } = require("../utils");
 
 const init = (model) => {
-  const upsertOne = async (req, res, type) => {
+  const upsert_one = async (req, res, type) => {
     try {
       if (!req.body || !Object.keys(req.body).length) {
         return send_response(res, { message: "no body received", status: 400 });
@@ -22,7 +22,7 @@ const init = (model) => {
 
       if (upd) {
         const upd_json = upd.toObject();
-        console.log(`${type} item saved:`, upd_json.id);
+        console.log(`${type}: item saved:`, upd_json.id);
         return send_response(res, { message: upd.toObject() });
       }
     } catch (e) {
@@ -31,7 +31,7 @@ const init = (model) => {
     }
   };
 
-  return { upsertOne };
+  return { upsert_one };
 };
 
 module.exports = { init };

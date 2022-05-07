@@ -2,9 +2,9 @@ const { deletes } = require("../../controllers");
 
 const init = (router, config, models) => {
   const { shopping_lists } = models;
-  const { deleteOne } = deletes.init(shopping_lists);
+  const { delete_one } = deletes.init(shopping_lists);
   router.delete("/delete", async (req, res) => {
-    return deleteOne(req, res, "shopping");
+    return delete_one(req, res, "shopping");
   });
 };
 

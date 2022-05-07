@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const SHOPPING_API = "http://localhost:8082/shopping";
-const MEALS_API = "http://localhost:8082/meals";
+const SHOPPING_API = "http://localhost:8080/shopping";
+const MEALS_API = "http://localhost:8080/meals";
 
 const handle_axios = async (callback) => {
   try {

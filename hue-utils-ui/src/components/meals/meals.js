@@ -79,7 +79,6 @@ export default function Meals({ weekday, api }) {
     setMeals(newMeals);
     await api.delete_single_meal_item(id);
   };
-
   return (
     <div>
       <Stack direction="row" alignItems="center" spacing={1}>
@@ -94,7 +93,7 @@ export default function Meals({ weekday, api }) {
         ))}
       </Stack>
       <div style={{ padding: "1em" }}>
-        <UpdateDialog title={"add new"} meals={meals} setMeals={setMeals} />
+        <UpdateDialog title={"add new"} weekday={weekday} setMeals={setMeals} />
       </div>
     </div>
   );

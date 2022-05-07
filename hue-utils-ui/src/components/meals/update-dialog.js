@@ -6,33 +6,17 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from "@mui/material/MenuItem";
 import { post_single_meal_item } from "../api/shopping";
+import { v4 as uuidv4 } from "uuid";
 
-const fields = [
-  { name: "meal" },
-  { name: "name" },
-  {
-    name: "weekday",
-    type: "select",
-    contents: [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ],
-  },
-];
+const fields = [{ name: "meal" }, { name: "name" }];
 
-const createFields = (formData, setFormData) => {
+const createFields = (formData, setFormData, weekday) => {
   return fields.map((field, index) => (
     <TextField
       onChange={(e) => {
         formData[field.name] = e.target.value;
-        setFormData(formData);
+        setFormData({ ...formData, weekday, id: uuidv4() });
       }}
       key={index}
       autoFocus
@@ -43,23 +27,20 @@ const createFields = (formData, setFormData) => {
       type={field.type || "name"}
       fullWidth
       variant="standard"
-    >
-      {field.contents &&
-        field.contents.map((item) => (
-          <MenuItem key={item} value={item}>
-            {item}
-          </MenuItem>
-        ))}
-    </TextField>
+    />
   ));
 };
 
-export default function FormDialog({ title, prev_meal, meals, setMeals }) {
+export default function FormDialog({ title, prev_meal, setMeals, weekday }) {
   const [open, setOpen] = React.useState(false);
   const [formData, setFormData] = React.useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
   };
 
   const handleClose = async () => {
@@ -75,8 +56,9 @@ export default function FormDialog({ title, prev_meal, meals, setMeals }) {
       });
       await post_single_meal_item(meal_item);
     } else {
-      meals.push(formData);
-      setMeals(meals);
+      setMeals((prevMeals) => {
+        return [...prevMeals, formData];
+      });
       await post_single_meal_item(formData);
     }
     setOpen(false);
@@ -94,10 +76,10 @@ export default function FormDialog({ title, prev_meal, meals, setMeals }) {
             Add a new meal here if you feel like it, go on wooooop break my
             website!
           </DialogContentText>
-          {createFields(formData, setFormData)}
+          {createFields(formData, setFormData, weekday)}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleCancel}>Cancel</Button>
           <Button onClick={handleClose}>Add</Button>
         </DialogActions>
       </Dialog>
